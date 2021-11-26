@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AudioSwitcher.AudioApi" Version="4.0.0-alpha5" />
+    <PackageReference Include="AudioSwitcher.AudioApi.CoreAudio" Version="4.0.0-alpha5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AudioDeviceChanger.Data\AudioDeviceChanger.Data.csproj" />
+  </ItemGroup>
+
+</Project>
