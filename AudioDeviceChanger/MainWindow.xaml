@@ -7,8 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
-        <ListView x:Name="lstOutputDevices" 
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ListView x:Name="lstOutputDevices" Grid.Row="0"
                   SelectionChanged="lstOutputDevices_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -22,6 +25,10 @@
             </ListView.ItemTemplate>
             
         </ListView>
+        <StackPanel Grid.Row="1">
+            <Button Content="Increment" Click="Button_Click"  />
+            <Button Content="Decrement" Click="Button_Click_1" />
+        </StackPanel>
 
     </Grid>
 </Window>
