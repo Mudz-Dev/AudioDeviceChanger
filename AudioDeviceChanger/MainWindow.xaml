@@ -7,19 +7,21 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListView x:Name="lstOutputDevices">
+        
+        <ListView x:Name="lstOutputDevices" 
+                  SelectionChanged="lstOutputDevices_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding FullName}"></TextBlock>
-                        <TextBlock Text="{Binding IsDefaultDevice, Mode=OneWay}"></TextBlock>
+                        <!--<RadioButton Content="Is Default" 
+                                     GroupName="IsDefaultGroup"
+                                     IsChecked="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"></RadioButton>-->
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            
         </ListView>
-        <Button Content="Set Default Device" HorizontalAlignment="Left" Margin="250,264,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-
-
 
     </Grid>
 </Window>

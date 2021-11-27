@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -23,29 +23,46 @@ namespace AudioDeviceChanger
     public partial class MainWindow : Window
     {
 
+
         public MainWindow()
         {
             InitializeComponent();
-            LoadDevices();
+            RefreshDevices();
         }
 
-        protected void LoadDevices()
+
+
+
+        protected void RefreshDevices()
         {
-            var defDefault = new CoreAudioController().GetDefaultDevice(AudioSwitcher.AudioApi.DeviceType.Playback, AudioSwitcher.AudioApi.Role.Multimedia);
 
-            lstOutputDevices.ItemsSource = new CoreAudioController().GetPlaybackDevices().Where(x => x.State == AudioSwitcher.AudioApi.DeviceState.Active);
+            lstOutputDevices.ItemsSource = AudioDevices.GetPlaybackDevices();
+
+            foreach(CoreAudioDevice device in lstOutputDevices.ItemsSource)
+            {
+                if(device.IsDefaultDevice)
+                {
+                    lstOutputDevices.SelectedItem = device;
+                    break;
+                }
+            }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        protected void SetDefaultDevice()
         {
             var selectedDevice = lstOutputDevices.SelectedItem as CoreAudioDevice;
             if (selectedDevice != null)
             {
-                
-                selectedDevice.SetAsDefault();
-                lstOutputDevices.ItemsSource = new CoreAudioController().GetPlaybackDevices().Where(x => x.State == AudioSwitcher.AudioApi.DeviceState.Active);
-            }
 
+                selectedDevice.SetAsDefault();
+                RefreshDevices();
+            }
+        }
+
+
+        private void lstOutputDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SetDefaultDevice();
         }
     }
 }
