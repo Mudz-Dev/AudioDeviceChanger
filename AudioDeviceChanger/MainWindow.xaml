@@ -4,6 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AudioDeviceChanger"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" SourceInitialized="Window_SourceInitialized">
     <Grid>
@@ -11,24 +19,38 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ListView x:Name="lstOutputDevices" Grid.Row="0"
-                  SelectionChanged="lstOutputDevices_SelectionChanged">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding FullName}"></TextBlock>
-                        <!--<RadioButton Content="Is Default" 
-                                     GroupName="IsDefaultGroup"
-                                     IsChecked="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}"></RadioButton>-->
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+        <GroupBox Grid.Row="0" Header="Output Devices">
             
-        </ListView>
-        <StackPanel Grid.Row="1">
-            <Button Content="Increment" Click="Button_Click"  />
-            <Button Content="Decrement" Click="Button_Click_1" />
-        </StackPanel>
+            <ListView x:Name="lstOutputDevices" Grid.Row="0" Margin="10,5,10,5"
+                    SelectionChanged="lstOutputDevices_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Grid.Column="0" Kind="SpeakerWireless" Width="24" Height="24" />
+                            <TextBlock Grid.Column="1" Text="{Binding FullName}" VerticalAlignment="Center"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
 
+            </ListView>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1" Header="Input Devices">
+
+            <ListView x:Name="lstInputDevices" Grid.Row="0" Margin="10,5,10,5">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding FullName}"></TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+        </GroupBox>
     </Grid>
 </Window>

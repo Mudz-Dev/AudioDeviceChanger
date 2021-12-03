@@ -52,7 +52,6 @@ namespace AudioDeviceChanger
         {
             InitializeComponent();
             Audio = new AudioDevices();
-            RefreshDevices();
         }
 
 
@@ -60,7 +59,8 @@ namespace AudioDeviceChanger
         {
             Audio.LoadPlaybackDevices();
             lstOutputDevices.ItemsSource = Audio.PlaybackDevices;
-            lstOutputDevices.SelectedItem = Audio.DefaultPlaybackDevice;  
+            lstOutputDevices.SelectedItem = Audio.DefaultPlaybackDevice;
+            lstOutputDevices.SelectionMode = SelectionMode.Single;
 
         }
 
@@ -104,6 +104,8 @@ namespace AudioDeviceChanger
 
             RegisterHotKey(_windowHandle, ADDHOTKEY_ID, MOD_CONTROL, VK_ADD); //CTRL + ADD
             RegisterHotKey(_windowHandle, SUBHOTKEY_ID, MOD_CONTROL, VK_SUB); //CTRL + SUB
+
+            RefreshDevices();
         }
 
         protected override void OnClosed(EventArgs e)
