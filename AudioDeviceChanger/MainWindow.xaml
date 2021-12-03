@@ -12,6 +12,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
+        xmlns:tb="http://www.hardcodet.net/taskbar" 
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" SourceInitialized="Window_SourceInitialized">
     <Grid>
@@ -19,6 +20,8 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
+
+
         <GroupBox Grid.Row="0" Header="Output Devices">
             
             <ListView x:Name="lstOutputDevices" Grid.Row="0" Margin="10,5,10,5"

@@ -8,13 +8,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="test.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AudioSwitcher.AudioApi" Version="4.0.0-alpha5" />
     <PackageReference Include="AudioSwitcher.AudioApi.CoreAudio" Version="4.0.0-alpha5" />
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
     <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AudioDeviceChanger.Data\AudioDeviceChanger.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="test.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Icons\test.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
