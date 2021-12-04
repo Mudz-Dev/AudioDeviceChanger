@@ -14,7 +14,9 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         xmlns:tb="http://www.hardcodet.net/taskbar" 
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" SourceInitialized="Window_SourceInitialized">
+        Title="MainWindow" Height="450" Width="600" SourceInitialized="Window_SourceInitialized" Closing="Window_Closing">
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -23,19 +25,26 @@
 
 
         <GroupBox Grid.Row="0" Header="Output Devices">
-            
+
             <ListView x:Name="lstOutputDevices" Grid.Row="0" Margin="10,5,10,5"
                     SelectionChanged="lstOutputDevices_SelectionChanged">
+
                 <ListView.ItemTemplate>
+
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="32" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Grid.Column="0" Kind="SpeakerWireless" Width="24" Height="24" />
+                            <materialDesign:PackIcon Name="SpeakerIcon" Grid.Column="0" Kind="SpeakerWireless" Width="24" Height="24"/>
                             <TextBlock Grid.Column="1" Text="{Binding FullName}" VerticalAlignment="Center"></TextBlock>
                         </Grid>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsDefaultDevice}" Value="True">
+                                <Setter TargetName="SpeakerIcon" Property="Foreground" Value="#42a5f5" ></Setter>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ListView.ItemTemplate>
 

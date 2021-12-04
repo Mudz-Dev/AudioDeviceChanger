@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace AudioDeviceChanger
 {
@@ -24,6 +25,7 @@ namespace AudioDeviceChanger
     /// </summary>
     public partial class MainWindow : Window
     {
+        public TaskbarIcon tb { get; set; }
 
         [DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
@@ -52,6 +54,7 @@ namespace AudioDeviceChanger
         {
             InitializeComponent();
             Audio = new AudioDevices();
+            tb = (TaskbarIcon)FindResource("MyNotifyIcon");
         }
 
 
@@ -81,16 +84,26 @@ namespace AudioDeviceChanger
             SetDefaultDevice();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void IncrementOutput()
         {
             Audio.IncrementPlaybackDevice();
             RefreshDevices();
+            ShowNotification("Output Device Changed", Audio.DefaultPlaybackDevice.FullName);
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void DecrementOutput()
         {
             Audio.DecrementPlaybackDevice();
             RefreshDevices();
+            ShowNotification("Output Device Changed", Audio.DefaultPlaybackDevice.FullName);
+        }
+
+        private void ShowNotification(string title, string message)
+        {
+            var currentApp = Application.Current as App;
+
+            if (currentApp != null)
+                currentApp.tb.ShowBalloonTip(title, message, BalloonIcon.Info);
         }
 
         private IntPtr _windowHandle;
@@ -130,8 +143,7 @@ namespace AudioDeviceChanger
                             if (vkey == VK_ADD)
                             {
                                 Console.WriteLine("Add Key Combo Pressed");
-                                Audio.IncrementPlaybackDevice();
-                                RefreshDevices();
+                                IncrementOutput();
                             }
                             handled = true;
                             break;
@@ -140,8 +152,7 @@ namespace AudioDeviceChanger
                             if (vkey == VK_SUB)
                             {
                                 Console.WriteLine("Subtract Key Combo Pressed");
-                                Audio.DecrementPlaybackDevice();
-                                RefreshDevices();
+                                DecrementOutput();
                             }
                             handled = true;
                             break;
@@ -149,6 +160,12 @@ namespace AudioDeviceChanger
                     break;
             }
             return IntPtr.Zero;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.Hide();
+            e.Cancel = true;
         }
     }
 }

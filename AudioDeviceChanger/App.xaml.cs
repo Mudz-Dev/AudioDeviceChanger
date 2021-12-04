@@ -14,7 +14,7 @@ namespace AudioDeviceChanger
     /// </summary>
     public partial class App : Application
     {
-        private TaskbarIcon tb;
+        public TaskbarIcon tb { get; set; }
 
 
         protected override void OnStartup(StartupEventArgs e)

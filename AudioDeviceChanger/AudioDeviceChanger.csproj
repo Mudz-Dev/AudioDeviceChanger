@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AudioDeviceChanger.ico" />
     <None Remove="test.ico" />
   </ItemGroup>
 
@@ -23,10 +24,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="AudioDeviceChanger.ico" />
     <Resource Include="test.ico" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Icons\AudioDeviceChanger.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Icons\test.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
