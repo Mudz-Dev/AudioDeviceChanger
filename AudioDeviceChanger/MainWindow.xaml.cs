@@ -33,8 +33,10 @@ namespace AudioDeviceChanger
         [DllImport("user32.dll")]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
-        private const int ADDHOTKEY_ID = 9000;
-        private const int SUBHOTKEY_ID = 9001;
+        private const int ADDPBHOTKEY_ID = 9000;
+        private const int SUBPBHOTKEY_ID = 9001;
+        private const int ADDCHOTKEY_ID = 9002;
+        private const int SUBCHOTKEY_ID = 9003;
 
         //Modifiers:
         private const uint MOD_NONE = 0x0000; //(none)
@@ -60,14 +62,28 @@ namespace AudioDeviceChanger
 
         protected void RefreshDevices()
         {
+            LoadOutputDevices();
+            LoadInputDevices();
+
+        }
+
+        protected void LoadOutputDevices()
+        {
             Audio.LoadPlaybackDevices();
             lstOutputDevices.ItemsSource = Audio.PlaybackDevices;
             lstOutputDevices.SelectedItem = Audio.DefaultPlaybackDevice;
             lstOutputDevices.SelectionMode = SelectionMode.Single;
-
         }
 
-        protected void SetDefaultDevice()
+        protected void LoadInputDevices()
+        {
+            Audio.LoadCaptureDevices();
+            lstInputDevices.ItemsSource = Audio.CaptureDevices;
+            lstInputDevices.SelectedItem = Audio.DefaultCaptureDevice;
+            lstInputDevices.SelectionMode = SelectionMode.Single;
+        }
+
+        protected void SetDefaultOutputDevice()
         {
             var selectedDevice = lstOutputDevices.SelectedItem as CoreAudioDevice;
             if (selectedDevice != null)
@@ -78,10 +94,20 @@ namespace AudioDeviceChanger
             }
         }
 
+        protected void SetDefaultInputDevice()
+        {
+            var selectedDevice = lstInputDevices.SelectedItem as CoreAudioDevice;
+            if (selectedDevice != null)
+            {
+
+                selectedDevice.SetAsDefault();
+                RefreshDevices();
+            }
+        }
 
         private void lstOutputDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SetDefaultDevice();
+            SetDefaultOutputDevice();
         }
 
         private void IncrementOutput()
@@ -96,6 +122,20 @@ namespace AudioDeviceChanger
             Audio.DecrementPlaybackDevice();
             RefreshDevices();
             ShowNotification("Output Device Changed", Audio.DefaultPlaybackDevice.FullName);
+        }
+
+        private void IncrementInput()
+        {
+            Audio.IncrementCaptureDevice();
+            RefreshDevices();
+            ShowNotification("Input Device Changed", Audio.DefaultCaptureDevice.FullName);
+        }
+
+        private void DecrementInput()
+        {
+            Audio.DecrementCaptureDevice();
+            RefreshDevices();
+            ShowNotification("Input Device Changed", Audio.DefaultCaptureDevice.FullName);
         }
 
         private void ShowNotification(string title, string message)
@@ -115,8 +155,11 @@ namespace AudioDeviceChanger
             _source = HwndSource.FromHwnd(_windowHandle);
             _source.AddHook(HwndHook);
 
-            RegisterHotKey(_windowHandle, ADDHOTKEY_ID, MOD_CONTROL, VK_ADD); //CTRL + ADD
-            RegisterHotKey(_windowHandle, SUBHOTKEY_ID, MOD_CONTROL, VK_SUB); //CTRL + SUB
+            RegisterHotKey(_windowHandle, ADDPBHOTKEY_ID, MOD_CONTROL, VK_ADD); //CTRL + ADD
+            RegisterHotKey(_windowHandle, SUBPBHOTKEY_ID, MOD_CONTROL, VK_SUB); //CTRL + SUB
+
+            RegisterHotKey(_windowHandle, ADDCHOTKEY_ID, MOD_ALT, VK_ADD); //ALT + ADD
+            RegisterHotKey(_windowHandle, SUBCHOTKEY_ID, MOD_ALT, VK_SUB); //ALT + SUB
 
             RefreshDevices();
         }
@@ -124,8 +167,10 @@ namespace AudioDeviceChanger
         protected override void OnClosed(EventArgs e)
         {
             _source.RemoveHook(HwndHook);
-            UnregisterHotKey(_windowHandle, ADDHOTKEY_ID);
-            UnregisterHotKey(_windowHandle, SUBHOTKEY_ID);
+            UnregisterHotKey(_windowHandle, ADDPBHOTKEY_ID);
+            UnregisterHotKey(_windowHandle, SUBPBHOTKEY_ID);
+            UnregisterHotKey(_windowHandle, ADDCHOTKEY_ID);
+            UnregisterHotKey(_windowHandle, SUBCHOTKEY_ID);
             base.OnClosed(e);
         }
 
@@ -138,7 +183,7 @@ namespace AudioDeviceChanger
                 case WM_HOTKEY:
                     switch (wParam.ToInt32())
                     {
-                        case ADDHOTKEY_ID:
+                        case ADDPBHOTKEY_ID:
                             vkey = (((int)lParam >> 16) & 0xFFFF);
                             if (vkey == VK_ADD)
                             {
@@ -147,12 +192,30 @@ namespace AudioDeviceChanger
                             }
                             handled = true;
                             break;
-                        case SUBHOTKEY_ID:
+                        case SUBPBHOTKEY_ID:
                             vkey = (((int)lParam >> 16) & 0xFFFF);
                             if (vkey == VK_SUB)
                             {
                                 Console.WriteLine("Subtract Key Combo Pressed");
                                 DecrementOutput();
+                            }
+                            handled = true;
+                            break;
+                        case ADDCHOTKEY_ID:
+                            vkey = (((int)lParam >> 16) & 0xFFFF);
+                            if (vkey == VK_ADD)
+                            {
+                                Console.WriteLine("Add Key Combo Pressed");
+                                IncrementInput();
+                            }
+                            handled = true;
+                            break;
+                        case SUBCHOTKEY_ID:
+                            vkey = (((int)lParam >> 16) & 0xFFFF);
+                            if (vkey == VK_SUB)
+                            {
+                                Console.WriteLine("Subtract Key Combo Pressed");
+                                DecrementInput();
                             }
                             handled = true;
                             break;
@@ -166,6 +229,11 @@ namespace AudioDeviceChanger
         {
             this.Hide();
             e.Cancel = true;
+        }
+
+        private void lstInputDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SetDefaultInputDevice();
         }
     }
 }

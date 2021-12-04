@@ -29,7 +29,7 @@
         </Grid.RowDefinitions>
 
 
-        <GroupBox Grid.Row="0" Header="Output Devices">
+        <GroupBox Grid.Row="0" Header="Output Devices - (Ctrl - Add/Subtrack)">
 
             <ListView x:Name="lstOutputDevices" Grid.Row="0" Margin="10,5,10,5"
                     SelectionChanged="lstOutputDevices_SelectionChanged">
@@ -54,16 +54,28 @@
                 </ListView.ItemTemplate>
 
             </ListView>
+            
         </GroupBox>
 
-        <GroupBox Grid.Row="1" Header="Input Devices">
+        <GroupBox Grid.Row="1" Header="Input Devices - (Alt - Add/Subtrack)">
 
-            <ListView x:Name="lstInputDevices" Grid.Row="0" Margin="10,5,10,5">
+            <ListView x:Name="lstInputDevices" Grid.Row="0" Margin="10,5,10,5" SelectionChanged="lstInputDevices_SelectionChanged">
                 <ListView.ItemTemplate>
+
                     <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding FullName}"></TextBlock>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Name="MicrophoneIcon" Kind="Microphone" Width="24" Height="24"/>
+                            <TextBlock Grid.Column="1" Text="{Binding FullName}" VerticalAlignment="Center"></TextBlock>
+                        </Grid>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsDefaultDevice}" Value="True">
+                                <Setter TargetName="MicrophoneIcon" Property="Foreground" Value="#42a5f5" ></Setter>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ListView.ItemTemplate>
 
