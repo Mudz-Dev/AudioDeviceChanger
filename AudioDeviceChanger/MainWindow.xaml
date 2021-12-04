@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AudioDeviceChanger"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        materialDesign:ThemeAssist.Theme="Dark"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -14,7 +15,11 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         xmlns:tb="http://www.hardcodet.net/taskbar" 
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="600" SourceInitialized="Window_SourceInitialized" Closing="Window_Closing">
+        Title="MainWindow" Height="450" Width="600" 
+        SourceInitialized="Window_SourceInitialized" 
+        Closing="Window_Closing" 
+        Icon="/AudioDeviceChanger.ico" 
+        WindowStartupLocation="CenterScreen">
 
 
     <Grid>
