@@ -5,11 +5,18 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Icons\AudioChanger.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="AudioChanger.ico" />
+    <None Remove="AudioChanger.png" />
     <None Remove="AudioDeviceChanger.ico" />
     <None Remove="test.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Icons\AudioChanger.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,11 +31,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="AudioChanger.ico" />
+    <Resource Include="AudioChanger.png" />
     <Resource Include="AudioDeviceChanger.ico" />
     <Resource Include="test.ico" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Icons\AudioChanger.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Icons\AudioChanger.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Icons\AudioDeviceChanger.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

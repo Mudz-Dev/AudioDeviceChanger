@@ -7,13 +7,13 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="34b377ac-e7aa-4213-9a13-da6def2f322a"
-    Publisher="CN=kiord"
+    Name="32647MatthewMcDowell.AudioChanger"
+    Publisher="CN=24E6244E-26B3-43E0-B16F-F359036061BC"
     Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>AudioDeviceChanger.Package</DisplayName>
-    <PublisherDisplayName>kiord</PublisherDisplayName>
+    <DisplayName>Audio Changer</DisplayName>
+    <PublisherDisplayName>Matthew McDowell</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
@@ -31,15 +31,20 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="AudioDeviceChanger.Package"
-        Description="AudioDeviceChanger.Package"
+        DisplayName="Audio Changer"
+        Description="Switch Output and Input Devices using hot keys"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png"  Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png" ShortName="Audio Changer">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square150x150Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square310x310Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
         <uap:SplashScreen Image="Images\SplashScreen.png" />
-        <uap:InitialRotationPreference>
-          <uap:Rotation Preference="portrait"/></uap:InitialRotationPreference>
+        <uap:LockScreen BadgeLogo="Images\BadgeLogo.png" Notification="badgeAndTileText"/>
       </uap:VisualElements>
     </Application>
   </Applications>
