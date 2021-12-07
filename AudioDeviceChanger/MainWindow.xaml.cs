@@ -52,13 +52,26 @@ namespace AudioDeviceChanger
         private const uint VK_SUB = 0x6D;
 
         AudioDevices Audio { get; set; }
+        GlobalSetting Settings { get; set; }
         public MainWindow()
         {
             InitializeComponent();
             Audio = new AudioDevices();
             tb = (TaskbarIcon)FindResource("MyNotifyIcon");
+            Settings = new GlobalSetting();
         }
 
+        protected void LoadSettings()
+        {
+            tglMinimize.IsChecked = Settings.MinimizeToTray;
+            tglRunOnPCStart.IsChecked = Settings.RunWhenPCStarts;
+        }
+
+        protected void SaveSettings()
+        {
+            Settings.MinimizeToTray = tglMinimize.IsChecked ?? true;
+            Settings.RunWhenPCStarts = tglRunOnPCStart.IsChecked ?? true;
+        }
 
         protected void RefreshDevices()
         {
@@ -227,8 +240,13 @@ namespace AudioDeviceChanger
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            this.Hide();
-            e.Cancel = true;
+            SaveSettings();
+
+            if (Settings.MinimizeToTray)
+            {
+                this.Hide();
+                e.Cancel = true;
+            }
         }
 
         private void lstInputDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -242,6 +260,11 @@ namespace AudioDeviceChanger
             window.Source = new Uri("Settings.xaml", UriKind.Relative);
             window.Show();
             this.Visibility = Visibility.Hidden;
+        }
+
+        private void DrawerHost_DrawerOpened(object sender, MaterialDesignThemes.Wpf.DrawerOpenedEventArgs e)
+        {
+            LoadSettings();
         }
     }
 }
