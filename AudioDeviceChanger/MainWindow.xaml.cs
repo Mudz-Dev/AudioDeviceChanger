@@ -235,5 +235,13 @@ namespace AudioDeviceChanger
         {
             SetDefaultInputDevice();
         }
+
+        private void btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationWindow window = new NavigationWindow();
+            window.Source = new Uri("Settings.xaml", UriKind.Relative);
+            window.Show();
+            this.Visibility = Visibility.Hidden;
+        }
     }
 }

@@ -15,73 +15,113 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         xmlns:tb="http://www.hardcodet.net/taskbar" 
         mc:Ignorable="d"
-        Title="Audio Changer" Height="450" Width="600" 
+        Title="Audio Changer" Height="600" Width="600" 
         SourceInitialized="Window_SourceInitialized" 
         Closing="Window_Closing" 
         Icon="/AudioChanger.ico" 
         WindowStartupLocation="CenterScreen">
 
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
 
 
-        <GroupBox Grid.Row="0" Header="Output Devices - (Ctrl - Add/Subtrack)">
+    <materialDesign:DrawerHost
+                x:Name="DrawerHost"
+                Margin="0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                BottomDrawerCornerRadius="20 20 0 0"
+                BottomDrawerBackground="{DynamicResource SecondaryHueLightBrush}">
 
-            <ListView x:Name="lstOutputDevices" Grid.Row="0" Margin="10,5,10,5"
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <materialDesign:ColorZone
+              Mode="PrimaryMid"
+              Padding="16">
+                <DockPanel>
+
+                    <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Audio Changer"></TextBlock>
+                    <Button x:Name="btnSettings" HorizontalAlignment="Right"
+                  Style="{StaticResource MaterialDesignIconForegroundButton}"
+                    ToolTip="MaterialDesignIconForegroundButton"
+                        Height="20" Width="20"
+                  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                            CommandParameter="{x:Static Dock.Right}">
+                        <materialDesign:PackIcon
+                    Kind="Gear"
+                    Height="16"
+                    Width="16"
+                    DockPanel.Dock="Right"/>
+                    </Button>
+                </DockPanel>
+            </materialDesign:ColorZone>
+
+            <GroupBox Grid.Row="1" Header="Output Devices - (Ctrl - +/-)">
+
+                <ListView x:Name="lstOutputDevices" Grid.Row="0" Margin="10,5,10,5"
                     SelectionChanged="lstOutputDevices_SelectionChanged">
 
-                <ListView.ItemTemplate>
+                    <ListView.ItemTemplate>
 
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="32" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Name="SpeakerIcon" Grid.Column="0" Kind="SpeakerWireless" Width="24" Height="24"/>
-                            <TextBlock Grid.Column="1" Text="{Binding FullName}" VerticalAlignment="Center"></TextBlock>
-                        </Grid>
-                        <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Path=IsDefaultDevice}" Value="True">
-                                <Setter TargetName="SpeakerIcon" Property="Foreground" Value="#42a5f5" ></Setter>
-                            </DataTrigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="32" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Name="SpeakerIcon" Grid.Column="0" Kind="SpeakerWireless" Width="24" Height="24"/>
+                                <TextBlock Grid.Column="1" Text="{Binding FullName}" VerticalAlignment="Center"></TextBlock>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsDefaultDevice}" Value="True">
+                                    <Setter TargetName="SpeakerIcon" Property="Foreground" Value="#42a5f5" ></Setter>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
 
-            </ListView>
-            
-        </GroupBox>
+                </ListView>
 
-        <GroupBox Grid.Row="1" Header="Input Devices - (Alt - Add/Subtrack)">
+            </GroupBox>
 
-            <ListView x:Name="lstInputDevices" Grid.Row="0" Margin="10,5,10,5" SelectionChanged="lstInputDevices_SelectionChanged">
-                <ListView.ItemTemplate>
+            <GroupBox Grid.Row="2" Header="Input Devices - (Alt - +/-)">
 
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="32" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Name="MicrophoneIcon" Kind="Microphone" Width="24" Height="24"/>
-                            <TextBlock Grid.Column="1" Text="{Binding FullName}" VerticalAlignment="Center"></TextBlock>
-                        </Grid>
-                        <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding Path=IsDefaultDevice}" Value="True">
-                                <Setter TargetName="MicrophoneIcon" Property="Foreground" Value="#42a5f5" ></Setter>
-                            </DataTrigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+                <ListView x:Name="lstInputDevices" Grid.Row="0" Margin="10,5,10,5" SelectionChanged="lstInputDevices_SelectionChanged">
+                    <ListView.ItemTemplate>
 
-            </ListView>
-        </GroupBox>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="32" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Name="MicrophoneIcon" Kind="Microphone" Width="24" Height="24"/>
+                                <TextBlock Grid.Column="1" Text="{Binding FullName}" VerticalAlignment="Center"></TextBlock>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsDefaultDevice}" Value="True">
+                                    <Setter TargetName="MicrophoneIcon" Property="Foreground" Value="#42a5f5" ></Setter>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
 
-        
-    </Grid>
+                </ListView>
+            </GroupBox>
+
+        </Grid>
+
+        <materialDesign:DrawerHost.RightDrawerContent>
+            <StackPanel Margin="16">
+                <TextBlock Text="Settings" HorizontalAlignment="Center" Margin="4"></TextBlock>
+                <ToggleButton x:Name="tglMinimiseToTray" Content="Minimize to system tray"></ToggleButton>
+            </StackPanel>
+        </materialDesign:DrawerHost.RightDrawerContent>
+    </materialDesign:DrawerHost>
+
 </Window>
