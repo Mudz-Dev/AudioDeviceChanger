@@ -17,5 +17,12 @@ namespace AudioDeviceChanger.Data
 
         }
 
+
+
+        public void SaveSettings()
+        {
+
+        }
+
     }
 }

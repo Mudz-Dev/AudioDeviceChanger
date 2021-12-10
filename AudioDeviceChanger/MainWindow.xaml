@@ -23,7 +23,6 @@
 
 
 
-
     <materialDesign:DrawerHost
                 x:Name="DrawerHost"
                 Margin="0"
@@ -122,15 +121,16 @@
                 <TextBlock Text="Settings" HorizontalAlignment="Center" Margin="4"></TextBlock>
                 <StackPanel  Orientation="Horizontal" Margin="4">
                     <ToggleButton x:Name="tglMinimize" Grid.Row="3" HorizontalAlignment="Right"
-                  Content="0"
-                  Style="{StaticResource MaterialDesignActionLightToggleButton}"                 
-                  ToolTip="MaterialDesignActionLightToggleButton" />
+                  Content=""
+                  Style="{StaticResource MaterialDesignActionAccentToggleButton}"                 
+                  ToolTip="MaterialDesignActionLightToggleButton"
+                                  />
                     <TextBlock Margin="4" Style="{StaticResource MaterialDesignCaptionTextBlock}" VerticalAlignment="Center" Text="Minimize To System Tray"></TextBlock>
                 </StackPanel>
                 <StackPanel  Orientation="Horizontal" Margin="4">
                     <ToggleButton x:Name="tglRunOnPCStart" Grid.Row="3" HorizontalAlignment="Right"
-                  Content="0"
-                  Style="{StaticResource MaterialDesignActionLightToggleButton}"                 
+                  
+                  Style="{StaticResource MaterialDesignActionAccentToggleButton}"                 
                   ToolTip="MaterialDesignActionLightToggleButton" />
                     <TextBlock Margin="4" Style="{StaticResource MaterialDesignCaptionTextBlock}" VerticalAlignment="Center" Text="Run When My PC Starts"></TextBlock>
                 </StackPanel>

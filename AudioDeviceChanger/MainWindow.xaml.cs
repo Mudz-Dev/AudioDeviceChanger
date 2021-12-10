@@ -17,6 +17,8 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using Hardcodet.Wpf.TaskbarNotification;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace AudioDeviceChanger
 {
@@ -58,19 +60,23 @@ namespace AudioDeviceChanger
             InitializeComponent();
             Audio = new AudioDevices();
             tb = (TaskbarIcon)FindResource("MyNotifyIcon");
-            Settings = new GlobalSetting();
+            string appFile = File.ReadAllText(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "AppSettings.json"));
+            Settings = JsonConvert.DeserializeObject<GlobalSetting>(appFile);
         }
+
 
         protected void LoadSettings()
         {
+
             tglMinimize.IsChecked = Settings.MinimizeToTray;
             tglRunOnPCStart.IsChecked = Settings.RunWhenPCStarts;
         }
-
         protected void SaveSettings()
         {
             Settings.MinimizeToTray = tglMinimize.IsChecked ?? true;
             Settings.RunWhenPCStarts = tglRunOnPCStart.IsChecked ?? true;
+            string appFile = JsonConvert.SerializeObject(Settings, Formatting.Indented);
+            File.WriteAllText(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "AppSettings.json"), appFile);
         }
 
         protected void RefreshDevices()
