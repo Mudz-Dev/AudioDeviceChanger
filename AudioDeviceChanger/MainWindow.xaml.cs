@@ -53,6 +53,21 @@ namespace AudioDeviceChanger
         //Subtract Key:
         private const uint VK_SUB = 0x6D;
 
+        protected string SettingsPath
+        {
+            get
+            {
+                return System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AudioChanger");
+            }
+        }
+        protected string SettingsFilename
+        {
+            get
+            {
+                return System.IO.Path.Combine(SettingsPath, "AppSettings.json");
+            }
+        }
+
         AudioDevices Audio { get; set; }
         GlobalSetting Settings { get; set; }
         public MainWindow()
@@ -60,11 +75,21 @@ namespace AudioDeviceChanger
             InitializeComponent();
             Audio = new AudioDevices();
             tb = (TaskbarIcon)FindResource("MyNotifyIcon");
-            string appFile = File.ReadAllText(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "AppSettings.json"));
-            Settings = JsonConvert.DeserializeObject<GlobalSetting>(appFile);
+            InitializeAppSettings();
         }
 
+        protected void InitializeAppSettings()
+        {
+            if (File.Exists(SettingsFilename)) {
+                string appFile = File.ReadAllText(SettingsFilename);
+                Settings = JsonConvert.DeserializeObject<GlobalSetting>(appFile);
+            }
+            else
+            {
+                Settings = new GlobalSetting();
+            }
 
+        }
         protected void LoadSettings()
         {
 
@@ -73,10 +98,14 @@ namespace AudioDeviceChanger
         }
         protected void SaveSettings()
         {
+            if (!(Directory.Exists(SettingsPath))) {
+                Directory.CreateDirectory(SettingsPath);
+            }
+
             Settings.MinimizeToTray = tglMinimize.IsChecked ?? true;
             Settings.RunWhenPCStarts = tglRunOnPCStart.IsChecked ?? true;
             string appFile = JsonConvert.SerializeObject(Settings, Formatting.Indented);
-            File.WriteAllText(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "AppSettings.json"), appFile);
+            File.WriteAllText(SettingsFilename, appFile);
         }
 
         protected void RefreshDevices()

@@ -14,15 +14,10 @@ namespace AudioDeviceChanger.Data
 
         public GlobalSetting()
         {
-
+            MinimizeToTray = true;
+            RunWhenPCStarts = true;
         }
 
-
-
-        public void SaveSettings()
-        {
-
-        }
 
     }
 }
