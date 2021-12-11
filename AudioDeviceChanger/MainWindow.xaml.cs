@@ -19,6 +19,8 @@ using System.Windows.Interop;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.IO;
 using Newtonsoft.Json;
+using System.Reflection;
+using Microsoft.Win32;
 
 namespace AudioDeviceChanger
 {
@@ -89,12 +91,15 @@ namespace AudioDeviceChanger
                 Settings = new GlobalSetting();
             }
 
+            //SetStartup();
+
         }
         protected void LoadSettings()
         {
 
             tglMinimize.IsChecked = Settings.MinimizeToTray;
             tglRunOnPCStart.IsChecked = Settings.RunWhenPCStarts;
+
         }
         protected void SaveSettings()
         {
@@ -104,6 +109,7 @@ namespace AudioDeviceChanger
 
             Settings.MinimizeToTray = tglMinimize.IsChecked ?? true;
             Settings.RunWhenPCStarts = tglRunOnPCStart.IsChecked ?? true;
+
             string appFile = JsonConvert.SerializeObject(Settings, Formatting.Indented);
             File.WriteAllText(SettingsFilename, appFile);
         }
@@ -273,6 +279,28 @@ namespace AudioDeviceChanger
             return IntPtr.Zero;
         }
 
+        private void SetStartup()
+        {
+
+            string runKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey(runKey);
+
+
+            if (Settings.RunWhenPCStarts)
+            {
+                rk.Close();
+                rk = Registry.CurrentUser.OpenSubKey(runKey, true);
+                rk.SetValue("AudioChanger", Assembly.GetExecutingAssembly().Location);
+                rk.Close();
+            }
+            else
+            {
+                rk = Registry.CurrentUser.OpenSubKey(runKey, true);
+                rk.DeleteValue("AudioChanger", false);
+                rk.Close();
+            }
+
+        }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             SaveSettings();
@@ -300,6 +328,18 @@ namespace AudioDeviceChanger
         private void DrawerHost_DrawerOpened(object sender, MaterialDesignThemes.Wpf.DrawerOpenedEventArgs e)
         {
             LoadSettings();
+        }
+
+        private void tglRunOnPCStart_Checked(object sender, RoutedEventArgs e)
+        {
+            Settings.RunWhenPCStarts = true;
+            //SetStartup();
+        }
+
+        private void tglRunOnPCStart_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Settings.RunWhenPCStarts = false;
+            //SetStartup();
         }
     }
 }
