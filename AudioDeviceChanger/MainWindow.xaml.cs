@@ -91,7 +91,7 @@ namespace AudioDeviceChanger
                 Settings = new GlobalSetting();
             }
 
-            //SetStartup();
+            SetStartup();
 
         }
         protected void LoadSettings()
@@ -333,13 +333,13 @@ namespace AudioDeviceChanger
         private void tglRunOnPCStart_Checked(object sender, RoutedEventArgs e)
         {
             Settings.RunWhenPCStarts = true;
-            //SetStartup();
+            SetStartup();
         }
 
         private void tglRunOnPCStart_Unchecked(object sender, RoutedEventArgs e)
         {
             Settings.RunWhenPCStarts = false;
-            //SetStartup();
+            SetStartup();
         }
     }
 }
