@@ -21,6 +21,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Reflection;
 using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace AudioDeviceChanger
 {
@@ -98,7 +99,7 @@ namespace AudioDeviceChanger
         {
 
             tglMinimize.IsChecked = Settings.MinimizeToTray;
-            tglRunOnPCStart.IsChecked = Settings.RunWhenPCStarts;
+            //tglRunOnPCStart.IsChecked = Settings.RunWhenPCStarts;
 
         }
         protected void SaveSettings()
@@ -108,7 +109,7 @@ namespace AudioDeviceChanger
             }
 
             Settings.MinimizeToTray = tglMinimize.IsChecked ?? true;
-            Settings.RunWhenPCStarts = tglRunOnPCStart.IsChecked ?? true;
+            //Settings.RunWhenPCStarts = tglRunOnPCStart.IsChecked ?? true;
 
             string appFile = JsonConvert.SerializeObject(Settings, Formatting.Indented);
             File.WriteAllText(SettingsFilename, appFile);
@@ -290,7 +291,8 @@ namespace AudioDeviceChanger
             {
                 rk.Close();
                 rk = Registry.CurrentUser.OpenSubKey(runKey, true);
-                rk.SetValue("AudioChanger", Assembly.GetExecutingAssembly().Location);
+                string executableStr = Process.GetCurrentProcess().MainModule.FileName;
+                rk.SetValue("AudioChanger", executableStr);
                 rk.Close();
             }
             else
