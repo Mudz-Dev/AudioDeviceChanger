@@ -9,7 +9,7 @@
   <Identity
     Name="32647MatthewMcDowell.AudioChanger"
     Publisher="CN=24E6244E-26B3-43E0-B16F-F359036061BC"
-    Version="1.0.3.0" />
+    Version="1.0.4.0" />
 
   <Properties>
     <DisplayName>Audio Changer</DisplayName>
