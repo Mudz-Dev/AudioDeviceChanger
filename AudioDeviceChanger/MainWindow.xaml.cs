@@ -99,7 +99,7 @@ namespace AudioDeviceChanger
         {
 
             tglMinimize.IsChecked = Settings.MinimizeToTray;
-            //tglRunOnPCStart.IsChecked = Settings.RunWhenPCStarts;
+            tglRunOnPCStart.IsChecked = Settings.RunWhenPCStarts;
 
         }
         protected void SaveSettings()
@@ -109,7 +109,7 @@ namespace AudioDeviceChanger
             }
 
             Settings.MinimizeToTray = tglMinimize.IsChecked ?? true;
-            //Settings.RunWhenPCStarts = tglRunOnPCStart.IsChecked ?? true;
+            Settings.RunWhenPCStarts = tglRunOnPCStart.IsChecked ?? true;
 
             string appFile = JsonConvert.SerializeObject(Settings, Formatting.Indented);
             File.WriteAllText(SettingsFilename, appFile);
